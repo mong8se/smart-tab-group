@@ -1,0 +1,65 @@
+#!/bin/bash
+
+PATH=./node_modules/.bin:$PATH
+
+function task:build {
+  : "Build extensions"
+
+  rm -Rf build
+  mkdir build
+
+  for browser in firefox chrome; do
+    cp -R src/$browser build
+    cp src/smart-tab-group.js build/$browser
+  done
+}
+
+function task:package {
+  : "Package extensions"
+
+  rm -Rf dist
+  mkdir dist
+
+  for browser in firefox chrome; do
+    zip -j dist/smart-tab-group-$browser.zip build/$browser/*
+  done
+}
+
+function task:default {
+  task:build
+}
+
+####################
+
+function task:help {
+  : "Prints this help"
+
+  echo "$0 <task> <args>"
+  echo
+  echo "Tasks:"
+  for task in $(compgen -A function | sed -nE '/default/d; s/task:(.*)/\1/p'); do
+    task:describe $task
+  done
+  echo
+  task:explain default
+}
+
+COLON_COMMENT_PATTERN=" *: *\(['"'"'"]\)\(.*\)\1;"
+function getTask {
+  type "task:$1"
+}
+
+function task:describe {
+  : "Prints description of task"
+
+  printf '    %-16s | %s\n' $1 "$(getTask $1 | sed -ne "s/${COLON_COMMENT_PATTERN}/\2/p")"
+}
+
+function task:explain {
+  : "Prints definition of task"
+
+  printf '%s => %s\n' $1 "$(getTask $1 | sed -e "1,2d; /${COLON_COMMENT_PATTERN}/d;")"
+}
+
+TIMEFORMAT="Task completed in %3lR"
+time "task:${@:-default}"

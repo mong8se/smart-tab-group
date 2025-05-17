@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "autoGroup",
+  "version": "1.0",
+  "description": "Automatically groups tabs opened from an existing tab that isn't pinned.",
+  "background": {
+    "service_worker": "chrome.js",
+    "type": "module"
+  }
+}
