@@ -21,7 +21,7 @@ function task:package {
   mkdir dist
 
   for browser in firefox chrome; do
-    zip -j dist/smart-tab-group-$browser.zip build/$browser/*
+    zip -j -FS dist/smart-tab-group-$browser.zip build/$browser/*
   done
 }
 
