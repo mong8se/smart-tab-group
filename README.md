@@ -12,3 +12,7 @@ However you have to remember to create that group beforehand. This extension tak
 
 ## The Details
 No configuration or permissions required.
+
+## Try it out!
+
+https://addons.mozilla.org/en-US/firefox/addon/smart-tab-group/
