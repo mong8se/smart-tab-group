@@ -1,4 +1,4 @@
-import { merge } from "lodash";
+import lodash from "lodash";
 
 async function main() {
   const [base, chrome, firefox] = await Promise.all([
@@ -11,8 +11,8 @@ async function main() {
     ),
   ]);
 
-  const chromeManifest = merge({}, base, chrome);
-  const firefoxManifest = merge({}, base, firefox);
+  const chromeManifest = lodash.merge({}, base, chrome);
+  const firefoxManifest = lodash.merge({}, base, firefox);
 
   await Promise.all([
     Deno.writeTextFile(
