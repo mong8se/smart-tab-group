@@ -12,6 +12,8 @@ function task:build {
     cp -R src/$browser build
     cp src/smart-tab-group.js build/$browser
   done
+
+  deno task build
 }
 
 function task:package {
