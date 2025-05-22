@@ -22,8 +22,10 @@ function task:package {
   rm -Rf dist
   mkdir dist
 
+  version=$(jq -r .version < src/manifest.json)
+
   for browser in firefox chrome; do
-    zip -j -FS dist/smart-tab-group-$browser.zip build/$browser/*
+    zip -j -FS dist/smart-tab-group-$browser-$version.zip build/$browser/*
   done
 }
 
