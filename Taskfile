@@ -1,7 +1,5 @@
 #!/bin/bash
 
-PATH=./node_modules/.bin:$PATH
-
 function task:build {
   : "Build extensions"
 
@@ -11,9 +9,8 @@ function task:build {
   for browser in firefox chrome; do
     cp -R src/$browser build
     cp src/smart-tab-group.js build/$browser
+    jq '. * input' src/manifest.json src/$browser/manifest.json > build/$browser/manifest.json
   done
-
-  deno task build
 }
 
 function task:package {
