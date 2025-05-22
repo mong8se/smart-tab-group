@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "smart-tab-group",
+  "name": "smart-tab-groups",
   "version": "1.0.4",
   "description": "Automatically groups tabs opened from an existing tab that isn't pinned.",
   "background": {

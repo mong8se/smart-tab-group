@@ -1,4 +1,4 @@
-# Smart Tab Group
+# Smart Tab Groups
 
 ## The Problem
 In Firefox and Chrome, if you create a tab group, and open a tab in that group, and then open a link in a new tab, the new tab is automatically joined to the group that spawned the tab.
@@ -15,4 +15,4 @@ No configuration or permissions required.
 
 ## Try it out!
 
-https://addons.mozilla.org/en-US/firefox/addon/smart-tab-group/
+https://addons.mozilla.org/en-US/firefox/addon/smart-tab-groups/

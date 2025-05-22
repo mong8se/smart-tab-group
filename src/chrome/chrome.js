@@ -1,4 +1,4 @@
-import autoGroup from './smart-tab-group.js';
+import autoGroup from './smart-tab-groups.js';
 
 const handler = autoGroup.bind(this, chrome);
 
