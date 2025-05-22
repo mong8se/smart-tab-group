@@ -2,7 +2,7 @@ name: Build and Package
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
@@ -11,18 +11,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build and package
+      - name: Build extensions
         run: |
           bash Taskfile build
 
       - name: Upload packages
         uses: actions/upload-artifact@v4
         with:
-          name: firefox build
+          name: smart-tab-group-firefox
           path: build/firefox/*
 
       - name: Upload packages
         uses: actions/upload-artifact@v4
         with:
-          name: chrome build
+          name: smart-tab-group-chrome
           path: build/chrome/*
