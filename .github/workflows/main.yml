@@ -19,4 +19,11 @@ jobs:
       - name: Upload packages
         uses: actions/upload-artifact@v4
         with:
-          path: dist/smart-tab-group-*.zip
+          name: firefox build
+          path: dist/smart-tab-group-firefox-*.zip
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: chrome build
+          path: dist/smart-tab-group-chrome-*.zip
