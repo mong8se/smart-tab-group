@@ -7,6 +7,8 @@ function task:build {
   mkdir build
 
   for browser in firefox chrome; do
+    echo "  building: $browser"
+
     cp -R src/$browser build
     cp src/smart-tab-group.js build/$browser
     jq '. * input' src/manifest.json src/$browser/manifest.json > build/$browser/manifest.json
