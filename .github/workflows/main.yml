@@ -14,16 +14,15 @@ jobs:
       - name: Build and package
         run: |
           bash Taskfile build
-          bash Taskfile package
 
       - name: Upload packages
         uses: actions/upload-artifact@v4
         with:
           name: firefox build
-          path: dist/smart-tab-group-firefox-*.zip
+          path: build/firefox/*
 
       - name: Upload packages
         uses: actions/upload-artifact@v4
         with:
           name: chrome build
-          path: dist/smart-tab-group-chrome-*.zip
+          path: build/chrome/*
