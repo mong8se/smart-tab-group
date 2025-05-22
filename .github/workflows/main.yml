@@ -1,16 +1,21 @@
+name: Build and Package
+
 on:
   push:
-    branches: [$default-branch]
+    branches: [ $default-branch ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Build and package
         run: |
           bash Taskfile build
           bash Taskfile package
+
       - name: Upload packages
         uses: actions/upload-artifact@v4
         with:
