@@ -1,20 +1,26 @@
-export default async function autoGroup({ tabs, tabGroups }, tab) {
-  // if tab has a groupId or doesn't have an opener, do nothing
-  if (tab.groupId !== -1 || !tab.openerTabId) return;
+export default async function autoGroup({ tabs, tabGroups }, newTab) {
+  // if the new tab already has a groupId or doesn't have an opener, do nothing
+  if (newTab.groupId !== -1 || !newTab.openerTabId) return;
 
-  const opener = await tabs.get(tab.openerTabId);
+  const openerTab = await tabs.get(newTab.openerTabId);
 
-  // if the opener has a groupId or is pinned, do nothing
-  if (opener.groupId !== -1 || opener.pinned) return;
+  // if the opener already has a groupId or is pinned, do nothing
+  if (
+    // due to this issue in Chrome: https://issues.chromium.org/issues/406427231
+    openerTab.url === "chrome://newtab/" ||
+    openerTab.groupId !== -1 ||
+    openerTab.pinned
+  )
+    return;
 
   const groupId = await tabs.group({
-    tabIds: [opener.id, tab.id],
+    tabIds: [openerTab.id, newTab.id],
   });
 
-  let title = opener.title;
+  let title = openerTab.title;
 
   if (!title) {
-    title = new URL(opener.url).hostname;
+    title = new URL(openerTab.url).hostname;
 
     if (title.startsWith("www.")) {
       title = title.slice(4);
