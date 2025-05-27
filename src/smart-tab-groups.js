@@ -1,17 +1,26 @@
-export default async function autoGroup({ tabs, tabGroups }, newTab) {
+const NO_GROUP_ID = -1;
+
+export default async function autoGroup(
+  { api: { tabs, tabGroups }, blankTab },
+  newTab,
+) {
   // if the new tab already has a groupId or doesn't have an opener, do nothing
-  if (newTab.groupId !== -1 || !newTab.openerTabId) return;
+  switch (true) {
+    case newTab.groupId !== NO_GROUP_ID:
+    case !newTab.openerTabId:
+      return;
+  }
 
   const openerTab = await tabs.get(newTab.openerTabId);
 
   // if the opener already has a groupId or is pinned, do nothing
-  if (
+  switch (true) {
     // due to this issue in Chrome: https://issues.chromium.org/issues/406427231
-    openerTab.url === "chrome://newtab/" ||
-    openerTab.groupId !== -1 ||
-    openerTab.pinned
-  )
-    return;
+    case openerTab.url === blankTab:
+    case openerTab.groupId !== NO_GROUP_ID:
+    case openerTab.pinned:
+      return;
+  }
 
   const groupId = await tabs.group({
     tabIds: [openerTab.id, newTab.id],
