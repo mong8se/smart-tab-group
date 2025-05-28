@@ -2,7 +2,7 @@ import autoGroup from "./smart-tab-groups.js";
 
 const handler = autoGroup.bind(this, {
   api: browser,
-  blankTab: "about:newtab",
+  internalTab: "about:",
 });
 
 browser.tabs.onCreated.addListener(handler);
