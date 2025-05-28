@@ -6,6 +6,7 @@ function task:build {
   rm -Rf build
   mkdir build
 
+  echo "Build v$(version)"
   for browser in firefox chrome; do
     echo "  building: $browser"
 
@@ -21,15 +22,26 @@ function task:package {
   rm -Rf dist
   mkdir dist
 
-  version=$(jq -r .version < src/manifest.json)
-
   for browser in firefox chrome; do
-    zip -j -FS dist/smart-tab-groups-$browser-$version.zip build/$browser/*
+    zip -j dist/smart-tab-groups-$browser-$(version).zip build/$browser/*
   done
+}
+
+function task:release {
+  : "Release extension"
+
+  git tag "v$(version)"
+  git push origin --tags
 }
 
 function task:default {
   task:build
+}
+
+function version {
+  : "Prints version of the extension"
+
+  jq -r .version < src/manifest.json
 }
 
 ####################
