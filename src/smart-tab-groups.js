@@ -1,10 +1,13 @@
+// tabGroups is only firefox 139 and newer
+const TAB_GROUP_ID_NONE = -1;
+
 export default async function autoGroup(
   { api: { tabs, tabGroups }, internalTab },
   newTab,
 ) {
   // if the new tab already has a groupId or doesn't have an opener, do nothing
   switch (true) {
-    case newTab.groupId !== tabGroups.TAB_GROUP_ID_NONE:
+    case newTab.groupId !== TAB_GROUP_ID_NONE:
     case !newTab.openerTabId:
       return;
   }
@@ -15,7 +18,7 @@ export default async function autoGroup(
   switch (true) {
     // due to this issue in Chrome: https://issues.chromium.org/issues/406427231
     case openerTab.url.startsWith(internalTab):
-    case openerTab.groupId !== tabGroups.TAB_GROUP_ID_NONE:
+    case openerTab.groupId !== TAB_GROUP_ID_NONE:
     case openerTab.pinned:
       return;
   }
@@ -33,6 +36,9 @@ export default async function autoGroup(
       title = title.slice(4);
     }
   }
+
+  // tabGroups is only firefox 139 and newer
+  if (!tabGroups) return;
 
   await tabGroups.update(groupId, {
     title,
