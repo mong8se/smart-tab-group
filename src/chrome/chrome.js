@@ -1,6 +1,6 @@
-import autoGroup from "./smart-tab-groups.js";
+import smartGroup from "./smart-tab-groups.js";
 
-const handler = autoGroup.bind(this, {
+const handler = smartGroup.bind(this, {
   api: chrome,
   internalTab: "chrome:",
 });
