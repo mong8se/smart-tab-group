@@ -1,18 +1,19 @@
 #!/bin/bash
 
+browsers=("firefox" "chrome")
+
 function task:build {
   : "Build extensions"
 
   rm -Rf build
-  mkdir build
 
   echo "Build v$(version)"
-  for browser in firefox chrome; do
+  for browser in "${browsers[@]}"; do
     echo "  building: $browser"
 
-    cp -R src/$browser build
-    cp src/smart-tab-groups.js build/$browser
-    jq '. * input' src/manifest.json src/$browser/manifest.json > build/$browser/manifest.json
+    mkdir -p build/$browser
+    cp src/*.js build/$browser
+    jq '. * input' src/manifest.json src/$browser.manifest.json > build/$browser/manifest.json
   done
 }
 
@@ -22,7 +23,8 @@ function task:package {
   rm -Rf dist
   mkdir dist
 
-  for browser in firefox chrome; do
+  for browser in "${browsers[@]}"; do
+    echo "  packaging: $browser"
     zip -j dist/smart-tab-groups-$browser-$(version).zip build/$browser/*
   done
 }

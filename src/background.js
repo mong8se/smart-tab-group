@@ -1,14 +1,16 @@
 import { smartGroup, smartUnGroup } from "./smart-tab-groups.js";
 
+const api = typeof browser === "undefined" ? chrome : browser;
+
 const handler = smartGroup.bind(this, {
-  api: browser,
+  api,
   internalTab: "about:",
 });
 
-browser.tabs.onCreated.addListener(handler);
+api.tabs.onCreated.addListener(handler);
 
 const unHandler = smartUnGroup.bind(this, {
-  api: browser,
+  api,
 });
 
-browser.tabs.onRemoved.addListener(unHandler);
+api.tabs.onRemoved.addListener(unHandler);
