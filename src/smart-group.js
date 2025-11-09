@@ -40,7 +40,12 @@ export async function smartGroup(
   // tabGroups is only firefox 139 and newer
   if (!tabGroups) return;
 
-  let title = openerTab.title;
+  const { nameStrategy } = await browser.storage.sync.get("nameStrategy");
+  if (nameStrategy === "useNone") return;
+
+  let title;
+  if (nameStrategy === "useTitle" || typeof nameStrategy === "undefined")
+    title = openerTab.title;
 
   if (!title) {
     title = new URL(openerTab.url).hostname;
@@ -53,45 +58,4 @@ export async function smartGroup(
   await tabGroups.update(groupId, {
     title,
   });
-}
-
-export async function smartUnGroup(
-  { api: { sessions, tabs } },
-  _tabId,
-  removeInfo,
-) {
-  if (removeInfo.isWindowClosing) return;
-
-  const groupList = await sessions.getWindowValue(
-    removeInfo.windowId,
-    "smart-tab-groups",
-  );
-
-  if (!groupList || groupList.length === 0) return;
-
-  const [newGroupList, ungroupList] = await Promise.all(
-    groupList.map((groupId) => tabs.query({ groupId })),
-  ).then((tabLists) =>
-    tabLists.reduce(
-      (result, tabList) => {
-        if (tabList.length === 1) {
-          result[1].push(tabList[0].id);
-        } else if (tabList.length > 1) {
-          result[0].push(tabList[0].groupId);
-        }
-        return result;
-      },
-      [[], []],
-    ),
-  );
-
-  if (ungroupList.length > 0) {
-    await tabs.ungroup(ungroupList);
-  }
-
-  await sessions.setWindowValue(
-    removeInfo.windowId,
-    "smart-tab-groups",
-    newGroupList,
-  );
 }

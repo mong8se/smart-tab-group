@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+  </head>
+
+  <body>
+    <h1>Smart Tab Groups Options</h1>
+    <form>
+      <fieldset>
+        <legend>Smartly ungroup tabs:</legend>
+        <div>
+          <input type="checkbox" id="shouldUngroup" name="shouldUngroup" checked />
+          <label for="shouldUngroup">Yes</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Smartly name groups:</legend>
+        <div>
+          <input
+            type="radio"
+            id="useTitle"
+            name="nameStrategy"
+            value="useTitle"
+            checked
+          />
+          <label for="useTitle">Title of first tab</label>
+        </div>
+        <div>
+          <input type="radio" id="useUrl" name="nameStrategy" value="useUrl" />
+          <label for="useUrl">Url of first tab</label>
+        </div>
+        <div>
+          <input
+            type="radio"
+            id="useNone"
+            name="nameStrategy"
+            value="useNone"
+          />
+          <label for="useNone">No name</label>
+        </div>
+      </fieldset>
+      <button type="submit">Save</button>
+    </form>
+    <script src="options.js"></script>
+  </body>
+</html>
