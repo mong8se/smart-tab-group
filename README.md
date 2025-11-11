@@ -27,8 +27,19 @@ takes care of that part for you.
 
 ## The Details
 
+There are preferences if you want to opt out of the smart un-grouping.
+
+Also you can choose the naming strategy (only Firefox v139 and above) :
+
+Use Title:
 The name of the group is set to the title of the parent tab, if it has
 one, otherwise the domain name is used.
+
+Use URL:
+The domain name is used.
+
+Use None:
+The group name is blank.
 
 ### The Permissions
 
