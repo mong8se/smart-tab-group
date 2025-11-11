@@ -9,10 +9,12 @@ function saveOptions(e) {
 
 function restoreOptions() {
   function setCurrentChoices(result) {
-    let shouldUngroup = result.shouldUngroup;
+    let { shouldUngroup, nameStrategy } = result;
     if (typeof shouldUngroup === "undefined") shouldUngroup = true;
     document.querySelector("#shouldUngroup").checked = shouldUngroup;
-    document.querySelector(`#${result.nameStrategy}`).checked = true;
+
+    if (typeof nameStrategy === "undefined") nameStrategy = "useTitle";
+    document.querySelector(`#${nameStrategy}`).checked = true;
   }
 
   function onError(error) {
@@ -25,3 +27,11 @@ function restoreOptions() {
 
 document.addEventListener("DOMContentLoaded", restoreOptions);
 document.querySelector("form").addEventListener("submit", saveOptions);
+document
+  .querySelector("#shouldUngroup")
+  .addEventListener("change", saveOptions);
+
+const radios = document.querySelectorAll("input[name='nameStrategy']");
+radios.forEach((radio) => {
+  radio.addEventListener("change", saveOptions);
+});
