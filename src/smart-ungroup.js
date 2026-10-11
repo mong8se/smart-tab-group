@@ -1,16 +1,21 @@
 export async function smartUnGroup(
   { api: { sessions, tabs } },
-  _tabId,
-  { windowId, isWindowClosing },
+  windowId,
+  goneTabIds = [],
 ) {
-  if (isWindowClosing) return;
-
   const groupList = await sessions.getWindowValue(windowId, "smart-tab-groups");
 
   if (!groupList || groupList.length === 0) return;
 
+  // closing tabs are still returned by tabs.query until their close animation ends
   const [newGroupList, ungroupList] = await Promise.all(
-    groupList.map((groupId) => tabs.query({ groupId })),
+    groupList.map((groupId) =>
+      tabs
+        .query({ groupId })
+        .then((tabList) =>
+          tabList.filter((tab) => !goneTabIds.includes(tab.id)),
+        ),
+    ),
   ).then((tabLists) =>
     tabLists.reduce(
       (result, tabList) => {
@@ -33,5 +38,7 @@ export async function smartUnGroup(
     await tabs.ungroup(ungroupList);
   }
 
-  await sessions.setWindowValue(windowId, "smart-tab-groups", newGroupList);
+  if (newGroupList.length !== groupList.length) {
+    await sessions.setWindowValue(windowId, "smart-tab-groups", newGroupList);
+  }
 }
