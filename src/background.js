@@ -15,4 +15,17 @@ const unHandler = smartUnGroup.bind(this, {
   api,
 });
 
-api.tabs.onRemoved.addListener(unHandler);
+const closedTabIds = [];
+
+api.tabs.onRemoved.addListener((tabId, { windowId, isWindowClosing }) => {
+  closedTabIds.push(tabId);
+  if (!isWindowClosing) unHandler(windowId, closedTabIds);
+});
+
+api.tabs.onUpdated.addListener((_tabId, { groupId }, { windowId }) => {
+  if (groupId !== undefined) unHandler(windowId);
+});
+
+api.tabs.onDetached.addListener((tabId, { oldWindowId }) =>
+  unHandler(oldWindowId, [tabId]),
+);
